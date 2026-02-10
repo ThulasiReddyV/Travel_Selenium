@@ -1,0 +1,14 @@
+{
+    "base_url" : "https://www.tgsrtc.telangana.gov.in/",
+    "from_loc" : "HYDERABAD",
+    "to_loc" : "TIRUPATI",
+    "bus_ser_no" : "1453",
+    "Date_of_jour" : "2026-02-20",
+    "boarding_pt" : "MGBS",
+    "dropping_pt" : "TIRUPATI",
+    "seat_no" : "18",
+    "pass_name" : "Ttt",
+    "pass_age" : "24",
+    "pass_email" : "Ttt@gmail.com",
+    "pass_mobile" : "9012345678"
+    }
