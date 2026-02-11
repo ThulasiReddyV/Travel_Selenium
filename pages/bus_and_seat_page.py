@@ -5,4 +5,4 @@ from selenium.webdriver.support.ui import WebDriverWait
 from pages.booking_page import Booking_page
 
 class Bus_and_Seat_Selection(Booking_page):
-    print("jki")
+    print("hello")
