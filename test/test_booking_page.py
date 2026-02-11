@@ -12,5 +12,6 @@ def test_002_booking(driver:WebDriver,test_data_load):
     booking.from_to_select(test_data_load)
     booking.date_select(test_data_load)
     booking.submit_travel_details()
+    booking.seats_buses_count()
 
     assert "results" in driver.current_url,"Did not to seats page"

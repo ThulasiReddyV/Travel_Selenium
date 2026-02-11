@@ -5,9 +5,8 @@ from pages.base_to_booking_page import Base_to_Booking_page
 def test_001_booking_page(driver:WebDriver):
     home = Base_to_Booking_page(driver)
     home.nav_to_booking()
-    home.windows_count()
-
-    home.window_handle()
+    
+    home.windows_count_and_handle()
     home.close_discount_pop_up()
     
 
