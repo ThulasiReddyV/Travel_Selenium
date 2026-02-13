@@ -12,7 +12,7 @@ def read_json(filename):
 def config_load():
     return read_json("config.json")
     
-@pytest.fixture(scope="session")
+#@pytest.fixture(scope="session")
 def test_data_load():
     return read_json("test_data.json")
 

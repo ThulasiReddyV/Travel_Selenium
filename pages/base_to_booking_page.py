@@ -14,7 +14,7 @@ class Base_to_Booking_page:
     #Navigate to Booking page from Base page
     BOOK_BUTTON = (By.CLASS_NAME,"book-your-ticket_button__l2bvh")
     POP_UP = (By.XPATH,'//*[@id="close"]/div')
-    FROM_ELE = (By.XPATH,'//*[@id="rc_select_0"]')
+    FROM_TXT_XPATH = (By.XPATH,'//*[@id="rc_select_0"]')
     
 
     def nav_to_booking(self):
