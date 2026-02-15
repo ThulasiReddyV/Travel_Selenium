@@ -18,7 +18,10 @@ class Base_to_Booking_page:
     
 
     def nav_to_booking(self):
+
         book_now_btn = self.wait.until(EC.element_to_be_clickable(self.BOOK_BUTTON))
+        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", book_now_btn)
+
         book_now_btn.click()
 
     def get_titile(self):
