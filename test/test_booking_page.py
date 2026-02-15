@@ -24,10 +24,11 @@ def test_101_booking(driver:WebDriver,data):
     else:
         booking.in_month(data["Date_of_journey"])
         booking.submit_travel_details()
-        buses_check = booking.above_2_months_no_route_check()
-
-        if buses_check:
+        if booking.no_of_buses_check() == False:
             assert "No Buses" in booking.above_2_months_no_route_error()
         else:
+
+            booking.seats_buses_count()
+
             
-            assert "results" in driver.current_url,"Did not to seats page"
+        assert "results" in driver.current_url,"Did not to seats page"

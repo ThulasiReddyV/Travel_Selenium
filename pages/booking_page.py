@@ -2,6 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import TimeoutException
 from pages.base_to_booking_page import Base_to_Booking_page
 #import pytest
 import datetime
@@ -80,6 +81,12 @@ class Booking_page(Base_to_Booking_page):
     def above_2_months_no_route_error(self):
         return "No Buses available for the Day!"
 
+    def no_of_buses_check(self):
+        try:
+            self.wait.until(EC.visibility_of_element_located(self.SERVICES_INFO_XPATH))
+            return True
+        except TimeoutException:
+            return False
 
     def seats_buses_count(self):
         print("seats page ")
@@ -108,7 +115,7 @@ class Booking_page(Base_to_Booking_page):
 
             """from pages.bus_and_seat_page import Bus_and_Seat_Selection
             Bus_and_Seat_Selection(self.driver)"""
-        return avb_buses_seats
+        
         
             
         
