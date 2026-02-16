@@ -38,9 +38,7 @@ class Base_to_Booking_page:
             pop_up_btn = WebDriverWait(self.driver,30).until(EC.element_to_be_clickable(self.POP_UP))
             pop_up_btn.click()
             print("pop up closed")
-
-            from pages.booking_page import Booking_page
-            return Booking_page(self.driver)
+            return True
         except TimeoutError:
             return False
         

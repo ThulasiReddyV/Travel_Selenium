@@ -22,7 +22,7 @@ class Booking_page(Base_to_Booking_page):
     SUBMIT_BUTTON_XPATH = (By.XPATH,'//*[@id= "gt-search"]')
     SERVICES_INFO_XPATH = (By.XPATH,'//*[span[text() ="Total Services "]]/parent::div')
     SERVICES_INFO_XPATH_2 = (By.XPATH,'//*[span[text() ="Total Services "]]')
-    NO_SERVICES_INFO_XPATH = (By.XPATH,'//*[contains(@class,"text-center") and contains(@class,"no-service")]')
+    NO_SERVICES_INFO_XPATH = (By.XPATH,'//*[h1]')
 
     def from_select(self,data):
         #from_ele = self.wait.until(EC.visibility_of_element_located(self.FROM_TXT_XPATH))
@@ -96,12 +96,10 @@ class Booking_page(Base_to_Booking_page):
                 time.sleep(1.5)
 
             print(f"{avb_buses_seats.text}")
-
-            from pages.bus_and_seat_page import Bus_and_Seat_Selection
-            return Bus_and_Seat_Selection(self.driver)
+            return avb_buses_seats
 
         except NoSuchElementException:
-            no_srv_msg = self.wait.until(EC.visibility_of_element_located(self.NO_SERVICES_INFO_XPATH))
+            no_srv_msg = self.driver.find_element(*self.NO_SERVICES_INFO_XPATH)
             return no_srv_msg
 
         

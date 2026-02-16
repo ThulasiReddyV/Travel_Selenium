@@ -50,17 +50,13 @@ class Bus_and_Seat_Selection(Booking_page):
     
         if 'available_seat' in seat_class:
             print(f"Seat no {seat_no} is  available")
-            self.seat_select(seat_sel)
+            self.driver.find_element(*self.SEAT_CONTINUE_XPATH).click()
+            return f"Seat no {seat_no} is available"
         else:
             print(f"Seat no {seat_no} is not available")
             return f"Seat no {seat_no} is not available"
 
 
-    def seat_select(self,seat_sel):
-        seat_sel.click()
-        self.driver.find_element(*self.SEAT_CONTINUE_XPATH).click()
-        from pages.passenger_details_page import Passenger_Details
-        return Passenger_Details(self.driver)
 
 
     

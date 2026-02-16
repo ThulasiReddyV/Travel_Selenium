@@ -12,9 +12,10 @@ def test_101_booking(driver:WebDriver,data):
     
     home.nav_to_booking()
     home.windows_count_and_handle()
-    time.sleep(2)
-
-    booking = home.close_discount_pop_up()
+    time.sleep(5)
+    home.close_discount_pop_up()
+    
+    booking = Booking_page(driver)
     time.sleep(2)
     booking.from_select(data["from_loc"])
     booking.to_select(data["to_loc"])
