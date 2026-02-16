@@ -4,7 +4,6 @@
         "from_loc" : "HYDERABAD",
         "to_loc" : "TIRUPATI",
         "Date_of_journey" : "2026-02-10",
-        "staus" : "Fail",
         "error_message" : "Past Date is selected"
     },
     {   
@@ -13,17 +12,54 @@
         "to_loc" : "TIRUPATI",
         "bus_ser_no" : "1453",
         "Date_of_journey" : "2026-05-20",
-        "staus" : "Fail",
-        "error_message" : "Date is selected above 2 months"
+        "error_message" : "No buses available for this route"
+
     },
 
     {   
         "test_case_id":"Test_002 No Bus route",
         "from_loc" : "HYDERABAD",
-        "to_loc" : "TIRUPATI",
+        "to_loc" : "ACHAMPET",
         "Date_of_journey" : "2026-02-20",
-        "staus" : "Fail",
         "error_message" : "No buses available for this route"
+    },
+
+    {   
+        "test_case_id":"Test_003 No Bus with the Service number",
+        "from_loc" : "HYDERABAD",
+        "to_loc" : "TIRUPATI",
+        "bus_ser_no" : "1454",
+        "Date_of_journey" : "2026-02-20",
+        "error_message" : "No element found"
+    },
+
+    {
+        "test_case_id":"Test_004 Unavailable Seat Selection",
+        "from_loc" : "HYDERABAD",
+        "to_loc" : "TIRUPATI",
+        "bus_ser_no" : "1453",
+        "Date_of_journey" : "2026-02-20",
+        "boarding_pt" : "MGBS",
+        "dropping_pt" : "TIRUPATI",
+        "seat_no" : "18",
+        "pass_name" : "Ttt",
+        "pass_age" : "9",
+        "pass_email" : "Ttt@gmail.com",
+        "pass_mobile" : "9012345678"
+    },
+    {
+        "test_case_id":"Test_005 Valid Date and Route",
+        "from_loc" : "HYDERABAD",
+        "to_loc" : "TIRUPATI",
+        "bus_ser_no" : "1453",
+        "Date_of_journey" : "2026-02-20",
+        "boarding_pt" : "MGBS",
+        "dropping_pt" : "TIRUPATI",
+        "seat_no" : "18",
+        "pass_name" : "Ttt",
+        "pass_age" : "24",
+        "pass_email" : "Ttt@gmail.com",
+        "pass_mobile" : "9012345678"
     }
 
  ]

@@ -75,17 +75,6 @@ class Booking_page(Base_to_Booking_page):
         submit_btn.click()
         print("submit clicked")    
 
-    def no_of_buses_check(self):
-        try:
-            self.driver.find_elements(*self.SERVICES_INFO_XPATH)
-
-            return True
-        except NoSuchElementException:
-            no_srv_msg = self.wait.until(EC.visibility_of_element_located(self.NO_SERVICES_INFO_XPATH)).text
-            return no_srv_msg
-        
-    
-
     def seats_buses_count(self):
         print("seats page ")
         #WebDriverWait(self.driver,30).until(lambda d: d.execute_script('return document.readyState') == 'complete')
@@ -113,7 +102,7 @@ class Booking_page(Base_to_Booking_page):
 
         except NoSuchElementException:
             no_srv_msg = self.wait.until(EC.visibility_of_element_located(self.NO_SERVICES_INFO_XPATH))
-            return no_srv_msg.text
+            return no_srv_msg
 
         
         
