@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException,NoSuchElementException
 from pages.base_to_booking_page import Base_to_Booking_page
 #import pytest
 import datetime
@@ -21,16 +21,19 @@ class Booking_page(Base_to_Booking_page):
     #DATE_OF_JOURNEY = (By.XPATH,f'//*[@title = "{test_data_load["Date_of_journey"]}"]')
     SUBMIT_BUTTON_XPATH = (By.XPATH,'//*[@id= "gt-search"]')
     SERVICES_INFO_XPATH = (By.XPATH,'//*[span[text() ="Total Services "]]/parent::div')
-    
+    SERVICES_INFO_XPATH_2 = (By.XPATH,'//*[span[text() ="Total Services "]]')
+    NO_SERVICES_INFO_XPATH = (By.XPATH,'//*[contains(@class,"text-center") and contains(@class,"no-service")]')
 
     def from_select(self,data):
-        from_ele = self.wait.until(EC.visibility_of_element_located(self.FROM_TXT_XPATH))
+        #from_ele = self.wait.until(EC.visibility_of_element_located(self.FROM_TXT_XPATH))
+        from_ele = self.wait.until(EC.element_to_be_clickable(self.FROM_TXT_XPATH))
         from_ele.click()
         from_ele.send_keys(data,Keys.RETURN)    
         print("from selected")
 
     def to_select(self,data):
-        to_ele = self.wait.until(EC.visibility_of_element_located(self.TO_TXT_XPATH))
+        #to_ele = self.wait.until(EC.visibility_of_element_located(self.TO_TXT_XPATH))
+        to_ele = self.wait.until(EC.element_to_be_clickable(self.TO_TXT_XPATH))
         to_ele.click()
         to_ele.send_keys(data,Keys.RETURN)
         print("to selected")
@@ -70,51 +73,49 @@ class Booking_page(Base_to_Booking_page):
     def submit_travel_details(self):
         submit_btn = self.wait.until(EC.element_to_be_clickable(self.SUBMIT_BUTTON_XPATH))
         submit_btn.click()
-        print("submit clicked")
-
-    def above_2_months_no_route_check(self):
-        element = self.driver.find_elements(*self.NO_BUS_DISPLAY)
-        print("No Buses available for the Day!")
-        print( len(element))
-        return len(element) 
-    
-    def above_2_months_no_route_error(self):
-        return "No Buses available for the Day!"
+        print("submit clicked")    
 
     def no_of_buses_check(self):
         try:
-            self.wait.until(EC.visibility_of_element_located(self.SERVICES_INFO_XPATH))
+            self.driver.find_elements(*self.SERVICES_INFO_XPATH)
+
             return True
-        except TimeoutException:
-            return False
+        except NoSuchElementException:
+            no_srv_msg = self.wait.until(EC.visibility_of_element_located(self.NO_SERVICES_INFO_XPATH)).text
+            return no_srv_msg
+        
+    
 
     def seats_buses_count(self):
         print("seats page ")
-        WebDriverWait(self.driver,30).until(lambda d: d.execute_script('return document.readyState') == 'complete')
+        #WebDriverWait(self.driver,30).until(lambda d: d.execute_script('return document.readyState') == 'complete')
         #time.sleep(10)
         prev_text = "Nothing"
-        self.wait.until(EC.visibility_of_element_located(self.SERVICES_INFO_XPATH))
+        
+        try:
+            self.driver.find_element(*self.SERVICES_INFO_XPATH)
+            #self.wait.until(EC.visibility_of_element_located(self.SERVICES_INFO_XPATH))
 
-        while True:
-            avb_buses_seats = self.driver.find_element(*self.SERVICES_INFO_XPATH)
-            current_text = avb_buses_seats.text
-            #print(f"{avb_buses_seats.text}")
-            
-            if current_text == prev_text and current_text !="Nothing":
-                break
-            prev_text = current_text
-            time.sleep(1.5)
+            while True:
+                avb_buses_seats = self.driver.find_element(*self.SERVICES_INFO_XPATH_2)
+                current_text = avb_buses_seats.text
+                #print(f"{avb_buses_seats.text}")
+                
+                if current_text == prev_text and current_text !="Nothing":
+                    break
+                prev_text = current_text
+                time.sleep(1.5)
 
-        if avb_buses_seats.text == "":
-            print(f"No Buses available for the Day! ")
-            self.driver.quit()
-
-        else:   
             print(f"{avb_buses_seats.text}")
-            #print(len(avb_buses_seats))""
 
-            """from pages.bus_and_seat_page import Bus_and_Seat_Selection
-            Bus_and_Seat_Selection(self.driver)"""
+            from pages.bus_and_seat_page import Bus_and_Seat_Selection
+            return Bus_and_Seat_Selection(self.driver)
+
+        except NoSuchElementException:
+            no_srv_msg = self.wait.until(EC.visibility_of_element_located(self.NO_SERVICES_INFO_XPATH))
+            return no_srv_msg.text
+
+        
         
         
             
