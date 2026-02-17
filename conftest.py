@@ -2,6 +2,7 @@ from selenium import webdriver
 import pytest
 import json
 import os
+from datetime import datetime
 
 def read_json(filename):
     path = os.path.join(os.path.dirname(__file__),"config",filename)
@@ -16,6 +17,10 @@ def config_load():
 def test_data_load():
     return read_json("test_data.json")
 
+@pytest.fixture(scope="function")
+def timestamp():
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    return timestamp
 
 @pytest.fixture(scope="function")
 
