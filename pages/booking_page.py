@@ -31,16 +31,16 @@ class Booking_page(Base_to_Booking_page):
         from_ele.click()
         from_ele.clear()
         from_ele.send_keys(data)
-        self.wait.until(EC.visibility_of_element_located((By.XPATH,f'//*[@title="{data.upper()}"]'))).click()
-        print(f"From {data.upper()} selected")
+        self.wait.until(EC.element_to_be_clickable((By.XPATH,f'//*[@title="{data.upper()}"]'))).click()
+        print(f"From {data.upper()} ")
 
     def to_select(self,data):
         #to_ele = self.wait.until(EC.visibility_of_element_located(self.TO_TXT_XPATH))
         to_ele = self.wait.until(EC.visibility_of_element_located(self.TO_TXT_XPATH))
         to_ele.click()
         to_ele.send_keys(data)
-        self.wait.until(EC.visibility_of_element_located((By.XPATH,f'//*[@title="{data.upper()}"]'))).click()
-        print(f"TO {data.upper()} selected")
+        self.wait.until(EC.element_to_be_clickable((By.XPATH,f'//*[@title="{data.upper()}"]'))).click()
+        print(f"TO {data.upper()} ")
 
 
 
@@ -65,7 +65,7 @@ class Booking_page(Base_to_Booking_page):
         try:
             date_of_jour = WebDriverWait(self.driver,2).until(EC.visibility_of_element_located((By.XPATH,f'//*[@title = "{data}"]')))
             date_of_jour.click()
-            print(f"Date {data} is selected")
+            print(f"Date {data}")
             return True
         except:
             self.next_month(data)
@@ -81,17 +81,16 @@ class Booking_page(Base_to_Booking_page):
         print("submit clicked")    
 
     def seats_buses_count(self):
-        print("seats page ")
+        
         #WebDriverWait(self.driver,30).until(lambda d: d.execute_script('return document.readyState') == 'complete')
         #time.sleep(10)
         prev_text = "Nothing"
         
         try:
-            self.driver.find_element(*self.SERVICES_INFO_XPATH)
-            #self.wait.until(EC.visibility_of_element_located(self.SERVICES_INFO_XPATH))
-
+            self.wait.until(EC.visibility_of_element_located(self.SERVICES_INFO_XPATH))
+            
             while True:
-                avb_buses_seats = self.driver.find_element(*self.SERVICES_INFO_XPATH_2)
+                avb_buses_seats = self.driver.find_element(*self.SERVICES_INFO_XPATH)
                 current_text = avb_buses_seats.text
                 #print(f"{avb_buses_seats.text}")
                 
@@ -99,11 +98,11 @@ class Booking_page(Base_to_Booking_page):
                     break
                 prev_text = current_text
                 time.sleep(1.5)
-
-            print(f"{avb_buses_seats.text}")
+            
+            print(avb_buses_seats.text)
             return avb_buses_seats
 
-        except NoSuchElementException:
+        except TimeoutError:
             no_srv_msg = self.driver.find_element(*self.NO_SERVICES_INFO_XPATH)
             return no_srv_msg
 
