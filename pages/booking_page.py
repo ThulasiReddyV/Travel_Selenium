@@ -87,7 +87,7 @@ class Booking_page(Base_to_Booking_page):
         prev_text = "Nothing"
         
         try:
-            self.wait.until(EC.visibility_of_element_located(self.SERVICES_INFO_XPATH))
+            self.driver.find_element(*self.SERVICES_INFO_XPATH)
             
             while True:
                 avb_buses_seats = self.driver.find_element(*self.SERVICES_INFO_XPATH)
@@ -102,7 +102,7 @@ class Booking_page(Base_to_Booking_page):
             print(avb_buses_seats.text)
             return avb_buses_seats
 
-        except TimeoutError:
+        except NoSuchElementException:
             no_srv_msg = self.driver.find_element(*self.NO_SERVICES_INFO_XPATH)
             return no_srv_msg
 

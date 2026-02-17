@@ -15,11 +15,11 @@ def test_301_passenger_details(driver:WebDriver,data):
     
     home.nav_to_booking()
     home.windows_count_and_handle()
-    time.sleep(5)
+    #time.sleep(5)
     home.close_discount_pop_up()
     
     booking = Booking_page(driver)
-    time.sleep(2)
+    #time.sleep(2)
     booking.from_select(data["from_loc"])
     booking.to_select(data["to_loc"])
     booking.calender_check()
@@ -50,11 +50,11 @@ def test_301_passenger_details(driver:WebDriver,data):
                     assert True, data["error_or_message"] 
                 else:
                     passenger = Passenger_Details(driver)
-                    passenger.gender()
-                    passenger.enter_pass_name()
-                    passenger.enter_pass_age()
-                    passenger.enter_pass_email()
-                    passenger.enter_pass_mobile_no()
+                    passenger.gender(data["pass_gender"])
+                    passenger.enter_pass_name(data["pass_name"])
+                    passenger.enter_pass_age(data["pass_age"])
+                    passenger.enter_pass_email(data["pass_email"])
+                    passenger.enter_pass_mobile_no(data["pass_mobile"])
                     passenger.payment_option_select()
                     passenger.booking_summary()
                     passenger.payment_discount_pop_up()

@@ -66,12 +66,14 @@ class Bus_and_Seat_Selection(Booking_page):
                 seat_sel.click()
                 self.driver.find_element(*self.SEAT_CONTINUE_XPATH).click()
                 return f"Seat no {seat_no} is available for female"
-            
             elif "gents" in seat_class or "available_seat" == seat_class:
                 print(f"Seat no {seat_no} is available")
                 seat_sel.click()
                 self.driver.find_element(*self.SEAT_CONTINUE_XPATH).click()
                 return f"Seat no {seat_no} is available"
+        elif "onhld_gents" == seat_class or "onhld_ladies" == seat_class:
+            print(f"Seat no {seat_no} is {seat_class} and unavailable present")
+            return f"Seat no {seat_no} is {seat_class} and unavailable present"
             
         elif seat_class == "e_ticketing_seat":
             print(f"Seat no {seat_no} is unavailable")

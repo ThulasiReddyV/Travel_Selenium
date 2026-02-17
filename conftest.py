@@ -22,6 +22,14 @@ def timestamp():
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     return timestamp
 
+
+@pytest.fixture(scope="function")
+def screenshots():
+    base_dir = os.getcwd()   # dynamically gets current project path
+    screenshot_dir = os.path.join(base_dir, "screenshots")
+    os.makedirs(screenshot_dir, exist_ok=True)
+    return screenshot_dir
+
 @pytest.fixture(scope="function")
 
 def driver(config_load):
