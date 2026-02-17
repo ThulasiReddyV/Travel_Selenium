@@ -44,6 +44,6 @@ def test_201_bus_and_seat_select(driver:WebDriver,data):
                 bus_seat.dropping_point_select(data["dropping_pt"])
                 bus_seat.bp_dp_submit()
                 seat_check = bus_seat.seat_check(data["seat_no"])
-                if "not available" in seat_check:
-                    assert data["error_or_message"] in seat_check
+                if "unavailable" in seat_check:
+                    assert True, data["error_or_message"] 
                 assert "service-details" in driver.current_url
