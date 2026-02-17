@@ -23,20 +23,25 @@ class Booking_page(Base_to_Booking_page):
     SERVICES_INFO_XPATH = (By.XPATH,'//*[span[text() ="Total Services "]]/parent::div')
     SERVICES_INFO_XPATH_2 = (By.XPATH,'//*[span[text() ="Total Services "]]')
     NO_SERVICES_INFO_XPATH = (By.XPATH,'//*[h1]')
+    
 
     def from_select(self,data):
         #from_ele = self.wait.until(EC.visibility_of_element_located(self.FROM_TXT_XPATH))
-        from_ele = self.wait.until(EC.element_to_be_clickable(self.FROM_TXT_XPATH))
+        from_ele = self.wait.until(EC.visibility_of_element_located(self.FROM_TXT_XPATH))
         from_ele.click()
-        from_ele.send_keys(data,Keys.RETURN)    
-        print("from selected")
+        from_ele.clear()
+        from_ele.send_keys(data)
+        self.wait.until(EC.visibility_of_element_located((By.XPATH,f'//*[@title="{data.upper()}"]'))).click()
+        print(f"From {data.upper()} selected")
 
     def to_select(self,data):
         #to_ele = self.wait.until(EC.visibility_of_element_located(self.TO_TXT_XPATH))
-        to_ele = self.wait.until(EC.element_to_be_clickable(self.TO_TXT_XPATH))
+        to_ele = self.wait.until(EC.visibility_of_element_located(self.TO_TXT_XPATH))
         to_ele.click()
-        to_ele.send_keys(data,Keys.RETURN)
-        print("to selected")
+        to_ele.send_keys(data)
+        self.wait.until(EC.visibility_of_element_located((By.XPATH,f'//*[@title="{data.upper()}"]'))).click()
+        print(f"TO {data.upper()} selected")
+
 
 
     def calender_check(self):
