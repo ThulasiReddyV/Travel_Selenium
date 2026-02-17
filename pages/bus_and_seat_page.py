@@ -34,17 +34,17 @@ class Bus_and_Seat_Selection(Booking_page):
         bd_point_dpd = self.wait.until(EC.visibility_of_element_located(self.BOARDING_POINT_DPD_ID))
         bd_point_dpd.click()
         bd_point_dpd.send_keys(data)
-        bd_point = self.wait.until(EC.visibility_of_element_located((By.XPATH,f'//*[contains(@aria-label,"{data.upper()}")]')))
+        bd_point = self.wait.until(EC.element_to_be_clickable((By.XPATH,f'//*[contains(@class,"ant-select-item-option-content")and contains(normalize-space(.),"{data.upper()}")]')))
         bd_point.click()
-        print(f"Boarding Point {bd_point.get_attribute('aria-label')}")
+        print(f"Boarding Point and Time {bd_point.text}")
         
     def dropping_point_select(self,data):
         dp_point_dpd = self.wait.until(EC.visibility_of_element_located(self.DROPPING_POINT_DPD_ID))
         dp_point_dpd.click()
         dp_point_dpd.send_keys(data)
-        dp_point = self.wait.until(EC.visibility_of_element_located((By.XPATH,f'//*[contains(@aria-label,"{data.upper()}")]')))
+        dp_point = self.wait.until(EC.element_to_be_clickable((By.XPATH,f'//*[contains(@class,"ant-select-item-option-content")and contains(normalize-space(.),"{data.upper()}")]')))
         dp_point.click()
-        print(f"Dropping Point {dp_point.get_attribute('aria-label')}")
+        print(f"Dropping Point and Time {dp_point.text}")
 
 
 
@@ -53,21 +53,25 @@ class Bus_and_Seat_Selection(Booking_page):
         bp_dp_submit.click()
     
     def seat_check(self,seat_no):
-
-        seat_sel = WebDriverWait(self.driver,30).until(EC.element_to_be_clickable((By.XPATH,f"//*[text()= '{seat_no}']")))
-        seat_class = seat_sel.get_attribute('class') 
+        print("Seat Selection")
+        seat_sel = WebDriverWait(self.driver,30).until(EC.visibility_of_element_located((By.XPATH,f'//*[@rowspan="1" and normalize-space(.)= "{seat_no}"]')))
+        child_of_seat_sel = seat_sel.find_element(By.XPATH,".//*")
+        seat_class = child_of_seat_sel.get_attribute('class') 
+        print(seat_class)
          
-        if  "available_seat" in seat_class:
+        if "available_seat" in seat_class:
+
             if "ladies" in seat_class:
                 print(f"Seat no {seat_no} is available for female")
                 seat_sel.click()
                 self.driver.find_element(*self.SEAT_CONTINUE_XPATH).click()
                 return f"Seat no {seat_no} is available for female"
+            
             elif "gents" in seat_class or "available_seat" == seat_class:
-                print(f"Seat no {seat_no} is available ")
+                print(f"Seat no {seat_no} is available")
                 seat_sel.click()
                 self.driver.find_element(*self.SEAT_CONTINUE_XPATH).click()
-                return f"Seat no {seat_no} is available for female"
+                return f"Seat no {seat_no} is available"
             
         elif seat_class == "e_ticketing_seat":
             print(f"Seat no {seat_no} is unavailable")
