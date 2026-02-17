@@ -35,12 +35,14 @@ class Base_to_Booking_page:
 
     def close_discount_pop_up(self):
         try: 
-            pop_up_btn = WebDriverWait(self.driver,30).until(EC.element_to_be_clickable(self.POP_UP))
+            pop_up_btn = self.wait.until(EC.visibility_of_element_located(self.POP_UP))
             pop_up_btn.click()
             print("pop up closed")
+            WebDriverWait(self.driver,3).until(EC.invisibility_of_element(self.POP_UP))
             return True
         except TimeoutError:
             return False
+        
         
         
         
