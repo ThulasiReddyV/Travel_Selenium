@@ -40,8 +40,8 @@ class Base_to_Booking_page:
             pop_up_ele = WebDriverWait(self.driver,30).until(EC.visibility_of_element_located(self.POP_UP_ID))
             pop_up_close = self.wait.until(EC.visibility_of_element_located(self.POP_UP_CLOSE_XPATH))
             pop_up_close.click()
-            print("Pop up closed")
             WebDriverWait(self.driver,3).until(EC.invisibility_of_element(self.POP_UP_ID))
+            print("Pop up closed")
             return True
         except TimeoutError:
             print("No pop up closed")
