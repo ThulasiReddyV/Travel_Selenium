@@ -61,16 +61,9 @@ class Passenger_Details(Bus_and_Seat_Selection):
 
 
     def payment_option_select(self):
-        print("PP")
-        payment_option = self.wait.until(EC.element_to_be_clickable(self.PAYMENT_OPTION_XPATH))
-        print("PP f")
-        
+        payment_option = self.wait.until(EC.element_to_be_clickable(self.PAYMENT_OPTION_XPATH))      
         payment_option.click()
-        print("PP s")
-
-        #self.wait.until(EC.element_located_to_be_selected(self.PAYMENT_OPTION_XPATH))
-        print("PP ss")
-
+     
         proceed_to_payment = self.wait.until(EC.visibility_of_element_located(self.PROCEED_TO_PAYMENT_XPATH))
         self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", proceed_to_payment)
         proceed_to_payment.click()

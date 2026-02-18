@@ -37,7 +37,7 @@ class Base_to_Booking_page:
     def close_discount_pop_up(self):
         #WebDriverWait(self.driver,30).until(lambda d: d.execute_script('return document.readyState') == 'complete')
         try: 
-            pop_up_ele = WebDriverWait(self.driver,30).until(EC.visibility_of_element_located(self.POP_UP_ID))
+            pop_up_ele = WebDriverWait(self.driver,30).until(EC.visibility_of_all_elements_located(self.POP_UP_ID))
             pop_up_close = self.wait.until(EC.visibility_of_element_located(self.POP_UP_CLOSE_XPATH))
             pop_up_close.click()
             WebDriverWait(self.driver,3).until(EC.invisibility_of_element(self.POP_UP_ID))

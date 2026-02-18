@@ -31,7 +31,7 @@ def test_201_bus_and_seat_select(driver:WebDriver,data):
         booking.submit_travel_details()
 
         buses_data = booking.seats_buses_count()
-        if data["error_or_message"] in buses_data.text:
+        if data["error_or_message"] in buses_data:
             assert True
         else:
             bus_seat = Bus_and_Seat_Selection(driver)

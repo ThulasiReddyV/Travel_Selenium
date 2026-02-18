@@ -27,6 +27,7 @@ class Bus_and_Seat_Selection(Booking_page):
             view_seats.click()
             return True
         except TimeoutException:
+            print(f"Service no {srv_no} Bus not found ")
             return False 
 
 
