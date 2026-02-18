@@ -8,6 +8,7 @@ from datetime import datetime
 from conftest import *
 from utilities import *
 import time
+import re
 
 class Passenger_Details(Bus_and_Seat_Selection):
     
@@ -64,5 +65,36 @@ class Passenger_Details(Bus_and_Seat_Selection):
         pass_mobile_no.send_keys(mobile)
         print(f"Mobile: {mobile}")
 
+    PAYMENT_OPTION_XPATH = (By.XPATH,'//span[contains(@class,"ant-radio") and .//*[@value="26"]]')
+    PROCEED_TO_PAYMENT_XPATH = (By.XPATH,'//*[span[text()="Proceed to Payment"]]')
+    DATA_PASS = (By.XPATH,"//*[contains(@class ,'confirmation-summary')]//tr/td")
+    BOOO=(By.XPATH,"//div[contains(@class,'ant-row')]//*[local-name()='svg']/parent::div")
 
+    def payment_option_select(self):
+            payment_option = self.wait.until(EC.element_to_be_clickable(self.PAYMENT_OPTION_XPATH))      
+            payment_option.click()
+        
+            proceed_to_payment = self.wait.until(EC.visibility_of_element_located(self.PROCEED_TO_PAYMENT_XPATH))
+            self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", proceed_to_payment)
+            proceed_to_payment.click()
+            time.sleep(1)
 
+    def verify_pass(self):
+        pass_data_elements = self.driver.find_elements(*self.DATA_PASS)
+        list_of_pass_data =[]
+    
+        for element in pass_data_elements:
+            for line in element.text.splitlines():
+                if not line.strip():
+                    continue
+                parts = re.split(r'\s*-\s*|\s{2,}', line.strip())
+                list_of_pass_data.extend([p.strip() for p in parts if p.strip()])
+
+        mob = self.driver.find_elements(*self.BOOO)
+        for el in mob:
+            list_of_pass_data.extend([line.strip() for line in el.text.splitlines() if line.strip()])
+            print(el.text.strip())
+        print("hhihi")
+        print(list_of_pass_data)
+
+    

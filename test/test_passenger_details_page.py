@@ -57,5 +57,6 @@ def test_301_passenger_details(driver:WebDriver,data):
                     passenger.enter_pass_age(data["pass_age"])
                     passenger.enter_pass_email(data["pass_email"])
                     passenger.enter_pass_mobile_no(data["pass_mobile"])
-                    
+                    passenger.payment_option_select()
+                    passenger.verify_pass()
 
