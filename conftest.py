@@ -2,20 +2,15 @@ from selenium import webdriver
 import pytest
 import json
 import os
+from utilities import *
 from datetime import datetime
 
-def read_json(filename):
-    path = os.path.join(os.path.dirname(__file__),"config",filename)
-    with open(path) as f:
-        return json.load(f)
+
 
 @pytest.fixture(scope="session")
 def config_load():
     return read_json("config.json")
     
-#@pytest.fixture(scope="session")
-def testcases_data_load():
-    return read_json("test_data.json")
 
 @pytest.fixture(scope="function")
 def driver(config_load):
@@ -23,5 +18,16 @@ def driver(config_load):
     driver.get(config_load["base_url"])
     driver.maximize_window()
     yield driver
+    take_screenshot(driver,'Payment_Page_again')
     driver.quit()
 
+def pytest_configure(config):
+    reports_dir = "reports"
+    os.makedirs(reports_dir,exist_ok = True)
+    timestamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+    if config.args:
+        test_name = os.path.splitext(os.path.basename(config.args[0]))[0]
+        report_name = f"{test_name}_{timestamp}.html"
+    else:
+        report_name = f"report_{timestamp}.html"
+    config.option.htmlpath = os.path.join(reports_dir,report_name)

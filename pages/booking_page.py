@@ -96,7 +96,7 @@ class Booking_page(Base_to_Booking_page):
                     break
                 prev_text = current_text
                 time.sleep(1.5)
-            print("HI")
+                
             print(avb_buses_seats.text)
             return avb_buses_seats.text
 

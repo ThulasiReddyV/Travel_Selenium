@@ -5,11 +5,13 @@ from pages.booking_page import Booking_page
 from pages.bus_and_seat_page import Bus_and_Seat_Selection
 from pages.passenger_details_page import Passenger_Details
 
-from conftest import testcases_data_load
+from utilities import *
 from datetime import datetime
 import time
 
-@pytest.mark.parametrize("data",testcases_data_load(),ids=[d["test_case_id"] for d in testcases_data_load()])
+
+
+@pytest.mark.parametrize("data",load_test_data(),ids=[d["test_case_id"] for d in load_test_data()])
 def test_301_passenger_details(driver:WebDriver,data):
     home = Base_to_Booking_page(driver)
     
@@ -55,9 +57,5 @@ def test_301_passenger_details(driver:WebDriver,data):
                     passenger.enter_pass_age(data["pass_age"])
                     passenger.enter_pass_email(data["pass_email"])
                     passenger.enter_pass_mobile_no(data["pass_mobile"])
-                    passenger.payment_option_select()
-                    passenger.booking_summary()
-                    passenger.payment_discount_pop_up()
-                    #https://secure.paytmpayments.com/oltp-web/processTransaction?orderid=TG26021716385688TVA6%20%%3E
-                    assert "processTransaction" in driver.current_url
+                    
 

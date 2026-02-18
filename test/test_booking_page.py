@@ -2,11 +2,11 @@ import pytest
 from selenium.webdriver.remote.webdriver import WebDriver
 from pages.booking_page import Base_to_Booking_page
 from pages.booking_page import Booking_page
-from conftest import  testcases_data_load 
+from conftest import  load_test_data 
 from datetime import datetime
 import time
 
-@pytest.mark.parametrize("data",testcases_data_load(),ids=[d["test_case_id"] for d in testcases_data_load()])
+@pytest.mark.parametrize("data",load_test_data(),ids=[d["test_case_id"] for d in load_test_data()])
 def test_101_booking(driver:WebDriver,data):
     home = Base_to_Booking_page(driver)
     
