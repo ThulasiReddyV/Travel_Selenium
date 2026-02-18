@@ -7,7 +7,7 @@ from pages.base_to_booking_page import Base_to_Booking_page
 #import pytest
 import datetime
 import time
-#from conftest import  test_data_load 
+
 
 
 class Booking_page(Base_to_Booking_page):
@@ -18,7 +18,6 @@ class Booking_page(Base_to_Booking_page):
     DEPART_SEL_XPATH = (By.XPATH,'/html/body/div[4]/div/div/div')
     NEXT_MONTH_BUTTON_XPATH = (By.XPATH,'//*[span[@class="ant-picker-next-icon"]]')
     NO_BUS_DISPLAY= (By.XPATH,'//*[text()="No Buses available for the Day!"]')
-    #DATE_OF_JOURNEY = (By.XPATH,f'//*[@title = "{test_data_load["Date_of_journey"]}"]')
     SUBMIT_BUTTON_XPATH = (By.XPATH,'//*[@id= "gt-search"]')
     SERVICES_INFO_XPATH = (By.XPATH,'//*[span[text() ="Total Services "]]/parent::div')
     SERVICES_INFO_XPATH_2 = (By.XPATH,'//*[span[text() ="Total Services "]]')

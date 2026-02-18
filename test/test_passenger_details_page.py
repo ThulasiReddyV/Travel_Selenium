@@ -5,11 +5,11 @@ from pages.booking_page import Booking_page
 from pages.bus_and_seat_page import Bus_and_Seat_Selection
 from pages.passenger_details_page import Passenger_Details
 
-from conftest import  test_data_load 
+from conftest import testcases_data_load
 from datetime import datetime
 import time
 
-@pytest.mark.parametrize("data",test_data_load(),ids=[d["test_case_id"] for d in test_data_load()])
+@pytest.mark.parametrize("data",testcases_data_load(),ids=[d["test_case_id"] for d in testcases_data_load()])
 def test_301_passenger_details(driver:WebDriver,data):
     home = Base_to_Booking_page(driver)
     

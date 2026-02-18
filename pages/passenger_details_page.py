@@ -6,6 +6,7 @@ from selenium.common.exceptions import TimeoutException,NoSuchElementException
 from pages.bus_and_seat_page import Bus_and_Seat_Selection
 from datetime import datetime
 from conftest import *
+from utilities import *
 
 class Passenger_Details(Bus_and_Seat_Selection):
     
@@ -28,9 +29,9 @@ class Passenger_Details(Bus_and_Seat_Selection):
         print("Filling Passenger Details")
 
         gender_dp = self.wait.until(EC.element_to_be_clickable(self.GENDER_XPATH))
-        print("Gender Selection")
         gender_dp.click()
         gender_sel = self.wait.until(EC.visibility_of_element_located((By.XPATH,f'//*[text()="{gender.capitalize()}"]')))
+        print(f"Gender: {gender.capitalize()}")
         gender_sel.click()
 
     def enter_pass_name(self,name):
@@ -70,8 +71,7 @@ class Passenger_Details(Bus_and_Seat_Selection):
 
     
     def booking_summary(self):
-        
-        self.driver.save_screenshot(f"{screenshots}/Passenger_Deatils_{timestamp}.png")
+        take_screenshot(self.driver,'Passenger_Details')
         confirm_details = self.wait.until(EC.visibility_of_element_located(self.CNF_DETAILS_XPATH))
         confirm_details.click()
 
@@ -83,4 +83,4 @@ class Passenger_Details(Bus_and_Seat_Selection):
         except TimeoutException:
             print("No payment discount pop_up")
 
-        self.driver.save_screenshot(f"{screenshots}/Payment_Page_{timestamp}.png")
+        take_screenshot(self.driver,'Payment_Page')
