@@ -20,6 +20,13 @@ class Passenger_Details(Bus_and_Seat_Selection):
     PASS_EMAIL_XPATH = (By.XPATH,'//*[@placeholder="Email"]')
     PASS_MOBILE_NO_XPATH = (By.XPATH,'//*[@placeholder="Mobile"]')
     #PAYMENT_OPTION_XPATH = (By.XPATH,'//*[@value="26"]')
+    FROM_IN_SUMMARY_XPATH = (By.XPATH,"//div[@class='summary_area']//span[text()='From']/following-sibling::span")
+    TO_IN_SUMMARY_XPATH = (By.XPATH,"//div[@class='summary_area']//span[text()='To']/following-sibling::span")
+    DATE_IN_SUMMARY_XPATH = (By.XPATH,"//div[@class='summary_area']//span[text()='Service Start Date']/following-sibling::span")
+    SERVICE_NO_IN_SUMMARY_XPATH = (By.XPATH,"//div[@class='summary_area']//span[text()='Service No.']/following-sibling::span")
+    SEAT_NO_IN_SUMMARY_XPATH = (By.XPATH,"//div[@class='summary_area']//span[text()='Seat No(s)']/following-sibling::span")
+    BOARDING_IN_SUMMARY_XPATH = (By.XPATH,"//div[@class='summary_area']//span[text()='Boarding']/following-sibling::span")
+    DROPPING_IN_SUMMARY_XPATH = (By.XPATH,"//div[@class='summary_area']//span[text()='Dropoff']/following-sibling::span")
     
 
     def gender(self,gender):
