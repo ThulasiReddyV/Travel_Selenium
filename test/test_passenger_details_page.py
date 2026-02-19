@@ -57,13 +57,13 @@ def test_301_passenger_details(driver:WebDriver,data):
                     passenger.enter_pass_age(data["pass_age"])
                     passenger.enter_pass_email(data["pass_email"])
                     passenger.enter_pass_mobile_no(data["pass_mobile"])
-                    passenger.booking_details()
+                    passenger.verify_booking_details()
                     passenger.payment_option_select()
-                    passenger.verify_boarding()
                     
-                    """details_check = passenger.dummy()
+                    details_check = passenger.error_check()
                     if details_check == False:
                         assert True
                     else:
-                        passenger.verify_pass(data)"""
+                        passenger.get_booking_summary()
+                        passenger.merge_booking_journey()
 
