@@ -18,7 +18,7 @@ class Booking_page(Base_to_Booking_page):
     DEPART_SEL_XPATH = (By.XPATH,'/html/body/div[4]/div/div/div')
     NEXT_MONTH_BUTTON_XPATH = (By.XPATH,'//*[span[@class="ant-picker-next-icon"]]')
     NO_BUS_DISPLAY= (By.XPATH,'//*[text()="No Buses available for the Day!"]')
-    SUBMIT_BUTTON_XPATH = (By.XPATH,'//*[@id= "gt-search"]')
+    SEARCH_BUTTON_ID = (By.ID,"gt-search")
     SERVICES_INFO_XPATH = (By.XPATH,'//*[span[text() ="Total Services "]]/parent::div')
     SERVICES_INFO_XPATH_2 = (By.XPATH,'//*[span[text() ="Total Services "]]')
     NO_SERVICES_INFO_XPATH = (By.XPATH,'//*[h1]')
@@ -39,7 +39,7 @@ class Booking_page(Base_to_Booking_page):
         to_ele.click()
         to_ele.send_keys(data)
         self.wait.until(EC.element_to_be_clickable((By.XPATH,f'//*[@title="{data.upper()}"]'))).click()
-        print(f"TO {data.upper()} ")
+        print(f"To {data.upper()} ")
 
 
 
@@ -75,9 +75,9 @@ class Booking_page(Base_to_Booking_page):
         self.in_month(data)
 
     def submit_travel_details(self):
-        submit_btn = self.wait.until(EC.element_to_be_clickable(self.SUBMIT_BUTTON_XPATH))
+        submit_btn = self.wait.until(EC.element_to_be_clickable(self.SEARCH_BUTTON_ID))
         submit_btn.click()
-        print("submit clicked")    
+        print("Search clicked")    
 
     def seats_buses_count(self):
         

@@ -28,7 +28,7 @@ class Passenger_Details(Bus_and_Seat_Selection):
     SEAT_NO_IN_SUMMARY_XPATH = (By.XPATH,"//div[@class='summary_area']//span[text()='Seat No(s)']/following-sibling::span")
     BOARDING_IN_SUMMARY_XPATH = (By.XPATH,"//div[@class='summary_area']//span[text()='Boarding']/following-sibling::span")
     DROPPING_IN_SUMMARY_XPATH = (By.XPATH,"//div[@class='summary_area']//span[text()='Dropoff']/following-sibling::span")
-    
+    DATA_NOT_ENTERED_CLASS = (By.CLASS_NAME,"ant-form-item-explain-error")
 
     def gender(self,gender):
         print("Filling Passenger Details")
@@ -40,61 +40,153 @@ class Passenger_Details(Bus_and_Seat_Selection):
         gender_sel.click()
 
     def enter_pass_name(self,name):
-        pass_name = self.wait.until(EC.visibility_of_element_located(self.PASS_NAME_XPATH))
+        pass_name = self.wait.until(EC.element_to_be_clickable(self.PASS_NAME_XPATH))
+        pass_name.click()
         pass_name.clear()
         pass_name.send_keys(name)
-        print(f"Name: {name}")
+        self.wait.until(lambda d: pass_name.get_attribute("value") == name)
+        print(f"Name: {pass_name.get_attribute("value")}")
 
     def enter_pass_age(self,age):
-        pass_age = self.wait.until(EC.visibility_of_element_located(self.PASS_AGE_XPATH))
+        pass_age = self.wait.until(EC.element_to_be_clickable(self.PASS_AGE_XPATH))
+        pass_age.click()
         pass_age.clear()
         pass_age.send_keys(age)
-        print(f"Age: {age}")
+        self.wait.until(lambda d: pass_age.get_attribute("value") == age)
+        print(f"Age: {pass_age.get_attribute("value")}")
+
 
         
     def enter_pass_email(self,email):
-        pass_email = self.wait.until(EC.visibility_of_element_located(self.PASS_EMAIL_XPATH))
+        pass_email = self.wait.until(EC.element_to_be_clickable(self.PASS_EMAIL_XPATH))
+        pass_email.click()
         pass_email.clear()
         pass_email.send_keys(email)
-        print(f"Email: {email}")
+        self.wait.until(lambda d: pass_email.get_attribute("value") == email)
+        print(f"Email: {pass_email.get_attribute("value")}")
+
 
 
     def enter_pass_mobile_no(self,mobile):
-        pass_mobile_no = self.wait.until(EC.visibility_of_element_located(self.PASS_MOBILE_NO_XPATH))
+        pass_mobile_no = self.wait.until(EC.element_to_be_clickable(self.PASS_MOBILE_NO_XPATH))
+        pass_mobile_no.click()
         pass_mobile_no.clear()
+        #self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", pass_mobile_no)
         pass_mobile_no.send_keys(mobile)
-        print(f"Mobile: {mobile}")
+        self.wait.until(lambda d: pass_mobile_no.get_attribute("value") == mobile)
+        print(f"Mobile: {pass_mobile_no.get_attribute("value")}")
+
 
     PAYMENT_OPTION_XPATH = (By.XPATH,'//span[contains(@class,"ant-radio") and .//*[@value="26"]]')
     PROCEED_TO_PAYMENT_XPATH = (By.XPATH,'//*[span[text()="Proceed to Payment"]]')
-    DATA_PASS = (By.XPATH,"//*[contains(@class ,'confirmation-summary')]//tr/td")
-    BOOO=(By.XPATH,"//div[contains(@class,'ant-row')]//*[local-name()='svg']/parent::div")
+    PASS_DETAILS_VERIFY_XPATH = (By.XPATH,"//*[contains(@class ,'confirmation-summary')]//tr/td")
+    PASS_EMAIL_MOBILE_VERIFY_XPATH=(By.XPATH,"//div[contains(@class,'ant-row')]//*[local-name()='svg']/parent::div")
+    ERROR_CLASS = (By.CLASS_NAME,"ant-form-item-explain-error")
+    SUMMARY_AREA_CLASS = (By.CLASS_NAME,"summary_area")
+    SIDEBAR_AREA_CLASS = (By.CLASS_NAME,"sidebar-left")
+
+
+    def booking_details(self):
+        summary_area = self.driver.find_elements(*self.SUMMARY_AREA_CLASS)
+        bk_data =[]
+        for ele in summary_area:
+            bk_data.extend(ele.text.splitlines())
+        print((bk_data))
+
 
     def payment_option_select(self):
-            payment_option = self.wait.until(EC.element_to_be_clickable(self.PAYMENT_OPTION_XPATH))      
-            payment_option.click()
-        
-            proceed_to_payment = self.wait.until(EC.visibility_of_element_located(self.PROCEED_TO_PAYMENT_XPATH))
-            self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", proceed_to_payment)
-            proceed_to_payment.click()
-            time.sleep(1)
+        payment_option = self.wait.until(EC.element_to_be_clickable(self.PAYMENT_OPTION_XPATH))     
+        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", payment_option)
+        payment_option.click()
 
-    def verify_pass(self):
-        pass_data_elements = self.driver.find_elements(*self.DATA_PASS)
-        list_of_pass_data =[]
+        proceed_to_payment = self.wait.until(EC.visibility_of_element_located(self.PROCEED_TO_PAYMENT_XPATH))
+        #self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", proceed_to_payment)
+        proceed_to_payment.click()
+        time.sleep(1)
     
-        for element in pass_data_elements:
+    def dummy(self):
+        
+        error_ele = self.driver.find_elements(*self.ERROR_CLASS)
+        length = len(error_ele)
+        print(length)
+
+        if length == 0:
+            return True
+        else:
+            return False
+            
+    def verify_boarding(self):
+        summary_area = self.wait.until(EC.visibility_of_element_located(self.SUMMARY_AREA_CLASS))
+        
+        bus_details = summary_area.find_elements(By.TAG_NAME,"div")
+        length = len(bus_details)
+        print(f"bus deta {length}")
+        booking_data = {}
+
+        for ele in bus_details:
+            print(ele.text)
+            spans = ele.find_elements(By.TAG_NAME,"span")
+            print(len(spans))
+
+            if len(spans)>=2:
+                
+                key = spans[0].text.strip().replace(":"," ").strip()
+                value = spans[1].text.strip()
+                print(f"k={key}--->v={value}")
+
+                if key in ["Boarding","Dropoff"] and '-' in value:
+                    parts = value.split("-")
+                    print(f"BD ,{parts}")
+                    #if len(parts) == 3:
+                    value = parts[1].strip()
+
+                key_map = {
+                    "From": "from_loc",
+                    "To": "to_loc",
+                    "Service Start Date": "Date_of_journey",
+                    "Service No.": "bus_ser_no",
+                    "Seat No(s)": "seat_no",
+                    "Boarding": "boarding_pt",
+                    "Dropoff": "dropping_pt"
+                }
+
+                if key in key_map:
+                    booking_data[key_map[key]] = value
+
+                print(booking_data)
+
+
+            
+
+
+
+
+
+
+
+
+
+
+    def verify_pass(self,org_dict):
+        pass_details_elements = self.driver.find_elements(*self.PASS_DETAILS_VERIFY_XPATH)
+        list_of_pass_data =[]
+            
+        for element in pass_details_elements:
             for line in element.text.splitlines():
                 if not line.strip():
                     continue
                 parts = re.split(r'\s*-\s*|\s{2,}', line.strip())
                 list_of_pass_data.extend([p.strip() for p in parts if p.strip()])
 
-        mob = self.driver.find_elements(*self.BOOO)
-        for el in mob:
+        email_mobile = self.driver.find_elements(*self.PASS_EMAIL_MOBILE_VERIFY_XPATH)
+        for el in email_mobile:
             list_of_pass_data.extend([line.strip() for line in el.text.splitlines() if line.strip()])
-            print(el.text.strip())
-        print("hhihi")
+        
         print(list_of_pass_data)
+
+        org_list = list(org_dict.values())
+        print(org_list)
+
+
 
     
