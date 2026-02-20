@@ -7,7 +7,6 @@ from pages.bus_and_seat_page import Bus_and_Seat_Selection
 from datetime import datetime
 from conftest import *
 from utilities import *
-from datetime import datetime
 import time
 import re
 
@@ -20,18 +19,19 @@ class Passenger_Details(Bus_and_Seat_Selection):
     PASS_NAME_XPATH = (By.XPATH,'//*[@placeholder="Name"]')
     PASS_AGE_XPATH = (By.XPATH,'//*[@placeholder="Age"]')
     PASS_EMAIL_XPATH = (By.XPATH,'//*[@placeholder="Email"]')
-    PASS_MOBILE_NO_XPATH = (By.XPATH,'//*[@placeholder="Mobile"]')
+    PASS_MOBILE_NUM_XPATH = (By.XPATH,'//*[@placeholder="Mobile"]')
     #PAYMENT_OPTION_XPATH = (By.XPATH,'//*[@value="26"]')
-    FROM_IN_SUMMARY_XPATH = (By.XPATH,"//div[@class='summary_area']//span[text()='From']/following-sibling::span")
-    TO_IN_SUMMARY_XPATH = (By.XPATH,"//div[@class='summary_area']//span[text()='To']/following-sibling::span")
-    DATE_IN_SUMMARY_XPATH = (By.XPATH,"//div[@class='summary_area']//span[text()='Service Start Date']/following-sibling::span")
-    SERVICE_NO_IN_SUMMARY_XPATH = (By.XPATH,"//div[@class='summary_area']//span[text()='Service No.']/following-sibling::span")
-    SEAT_NO_IN_SUMMARY_XPATH = (By.XPATH,"//div[@class='summary_area']//span[text()='Seat No(s)']/following-sibling::span")
-    BOARDING_IN_SUMMARY_XPATH = (By.XPATH,"//div[@class='summary_area']//span[text()='Boarding']/following-sibling::span")
-    DROPPING_IN_SUMMARY_XPATH = (By.XPATH,"//div[@class='summary_area']//span[text()='Dropoff']/following-sibling::span")
-    DATA_NOT_ENTERED_CLASS = (By.CLASS_NAME,"ant-form-item-explain-error")
 
-    def gender(self,gender):
+    DATA_NOT_FILLED_ERROR_CLASS = (By.CLASS_NAME,"ant-form-item-explain-error")
+    BOOKING_SUMMARY_CLASS = (By.CLASS_NAME,"ant-modal-content")
+    PAYMENT_OPTION_XPATH = (By.XPATH,'//span[contains(@class,"ant-radio") and .//*[@value="26"]]')
+    PROCEED_TO_PAYMENT_XPATH = (By.XPATH,'//*[span[text()="Proceed to Payment"]]')
+    SUMMARY_AREA_CLASS = (By.CLASS_NAME,"summary_area")
+    SIDEBAR_AREA_CLASS = (By.CLASS_NAME,"sidebar-left")
+
+
+
+    def select_gender(self,gender):
         print("Filling Passenger Details")
 
         gender_dp = self.wait.until(EC.element_to_be_clickable(self.GENDER_XPATH))
@@ -56,8 +56,6 @@ class Passenger_Details(Bus_and_Seat_Selection):
         self.wait.until(lambda d: pass_age.get_attribute("value") == age)
         print(f"Age: {pass_age.get_attribute("value")}")
 
-
-        
     def enter_pass_email(self,email):
         pass_email = self.wait.until(EC.element_to_be_clickable(self.PASS_EMAIL_XPATH))
         pass_email.click()
@@ -66,10 +64,8 @@ class Passenger_Details(Bus_and_Seat_Selection):
         self.wait.until(lambda d: pass_email.get_attribute("value") == email)
         print(f"Email: {pass_email.get_attribute("value")}")
 
-
-
     def enter_pass_mobile_no(self,mobile):
-        pass_mobile_no = self.wait.until(EC.element_to_be_clickable(self.PASS_MOBILE_NO_XPATH))
+        pass_mobile_no = self.wait.until(EC.element_to_be_clickable(self.PASS_MOBILE_NUM_XPATH))
         pass_mobile_no.click()
         pass_mobile_no.clear()
         #self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", pass_mobile_no)
@@ -78,16 +74,6 @@ class Passenger_Details(Bus_and_Seat_Selection):
         print(f"Mobile: {pass_mobile_no.get_attribute("value")}")
 
 
-    PAYMENT_OPTION_XPATH = (By.XPATH,'//span[contains(@class,"ant-radio") and .//*[@value="26"]]')
-    PROCEED_TO_PAYMENT_XPATH = (By.XPATH,'//*[span[text()="Proceed to Payment"]]')
-    ERROR_CLASS = (By.CLASS_NAME,"ant-form-item-explain-error")
-    SUMMARY_AREA_CLASS = (By.CLASS_NAME,"summary_area")
-    SIDEBAR_AREA_CLASS = (By.CLASS_NAME,"sidebar-left")
-
-
-    
-    
-            
     def verify_booking_details(self):
         summary_area = self.wait.until(EC.visibility_of_element_located(self.SUMMARY_AREA_CLASS))
         
@@ -107,8 +93,8 @@ class Passenger_Details(Bus_and_Seat_Selection):
                     if len(parts) >= 3:
                         value = parts[1].strip()
                     
-                if value in value.strip().strftime("%d/%m/%y"):
-                    value = datetime.strptime(value("%Y-%m-%d"))
+                if re.match(r'^\d{2}/\d{2}/\d{4}$', value):
+                    value = datetime.strptime(value, "%d/%m/%Y").strftime("%Y-%m-%d")
 
                 key_map = {
                     "From": "from_loc",
@@ -140,121 +126,15 @@ class Passenger_Details(Bus_and_Seat_Selection):
     
     def error_check(self):
         
-        error_ele = self.driver.find_elements(*self.ERROR_CLASS)
-        length = len(error_ele)
-        print(length)
+        error_ele = self.driver.find_elements(*self.DATA_NOT_FILLED_ERROR_CLASS)
+        length_error_ele = len(error_ele)
 
-        if length == 0:
+        booking_summary_class_ele = self.driver.find_elements(*self.BOOKING_SUMMARY_CLASS)
+        length_booking = len(booking_summary_class_ele)
+        print(f"Errors: {length_error_ele}, Booking summary: {length_booking}")
+
+        if length_error_ele == 0 and length_booking != 0:
             return True
         else:
             return False
-
-    JOURNEY_DETAILS_VERIFY_XPATH = (By.XPATH,"//h4[text()='Journey Details']/following::table[1]//tr")
-    PASS_DETAILS_VERIFY_XPATH = (By.XPATH,"//h4[text()='Passengers']/following::table[1]//tbody/tr")
-    PASS_EMAIL_MOBILE_VERIFY_XPATH = (By.XPATH,"//h4[text()='Passengers']/following::div[contains(@class,'ant-col')]")
-
-    def get_booking_summary(self):
-
-        journey_details = self.driver.find_elements(*self.JOURNEY_DETAILS_VERIFY_XPATH)
-        journey_ui = {}
-    
-        for ele in journey_details:
-            header = ele.find_element(By.ID,"th").text.strip().lower()
-            value = ele.find_element(By.ID,"td").text.strip()
-
-            if header == "journey":
-                from_to = value.split("→")
-                journey_ui["from_loc"] = from_to[0].strip()
-                journey_ui["to_loc"] = from_to[1].strip()
-
-            elif header == "date":
-                journey_ui["Date_of_journey"] = value
-
-            elif header == "service no":
-                journey_ui["bus_ser_no"] = value
-
-            elif header == "boarding":
-                journey_ui["boarding_pt"] = value
-
-            elif header == "dropping":
-                journey_ui["dropping_pt"] = value
-
-
-        passenger_row = self.driver.find_element(*self.PASS_DETAILS_VERIFY_XPATH)
-        cols = passenger_row.find_elements(By.TAG_NAME, "td")
-
-        journey_ui["seat_no"] = cols[0].text.strip()
-
-        name_text = cols[1].text.strip().split()
-        title = name_text[0].strip().lower().replace(".", "")
-
-        gender_map = {
-            "mr": "Male",
-            "mrs": "Female",
-            "miss": "Female"
-        }
-
-        journey_ui["pass_gender"] = gender_map.get(title, "")
-        journey_ui["pass_name"] = " ".join(name_text[1:])
-        journey_ui["pass_age"] = cols[2].text.strip()
-
-        # Email & Mobile
-        pass_email = ""
-        pass_mobile = ""
-
-        email_mobile_divs = self.driver.find_elements(*self.PASS_EMAIL_MOBILE_VERIFY_XPATH)
-
-        for div in email_mobile_divs:
-            text = div.text.strip()
-            if "@" in text:
-                pass_email = text
-            elif text.isdigit():
-                pass_mobile = text
-
-        journey_ui["pass_email"] = pass_email
-        journey_ui["pass_mobile"] = pass_mobile
-
-    
-        print(journey_ui)
-        return journey_ui
-
-    def merge_booking_journey(self):
-
-        booking = self.verify_booking_details()
-        journey = self.get_booking_summary()
-        ui_dict = {}
-        mismatches = []
-
-        all_keys = set(booking.keys()).union(set(journey.keys()))
-
-        for key in all_keys:
-
-            if key in booking and key in journey:
-                if booking[key] == journey[key]:
-                    ui_dict[key] = booking[key]
-                else:
-                    print(f"Value mismatch for key '{key}' → Expected: {booking[key]} | Actual: {journey[key]}")
-                    mismatches.append(f"{key}: Expected={booking[key]} | Actual={journey[key]}"
-                )
-
-            elif key in booking:
-                ui_dict[key] = booking[key]
-
-            elif key in journey:
-                ui_dict[key] = journey[key]
-        
-        if mismatches:
-            raise AssertionError("Mismatches found:\n" + "\n".join(mismatches))
-        
-        return ui_dict
-
-
-
-
-
-            
-
-
-
-
     

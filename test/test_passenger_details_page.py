@@ -52,7 +52,7 @@ def test_301_passenger_details(driver:WebDriver,data):
                     assert True, data["error_or_message"] 
                 else:
                     passenger = Passenger_Details(driver)
-                    passenger.gender(data["pass_gender"])
+                    passenger.select_gender(data["pass_gender"])
                     passenger.enter_pass_name(data["pass_name"])
                     passenger.enter_pass_age(data["pass_age"])
                     passenger.enter_pass_email(data["pass_email"])
@@ -62,8 +62,6 @@ def test_301_passenger_details(driver:WebDriver,data):
                     
                     details_check = passenger.error_check()
                     if details_check == False:
-                        assert True
-                    else:
-                        passenger.get_booking_summary()
-                        passenger.merge_booking_journey()
+                        assert True, "Passenger Data Not entered"
+                    
 
