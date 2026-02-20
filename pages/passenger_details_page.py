@@ -74,7 +74,7 @@ class Passenger_Details(Bus_and_Seat_Selection):
         print(f"Mobile: {pass_mobile_no.get_attribute("value")}")
 
 
-    def verify_booking_details(self):
+    def verify_journey_details(self):
         summary_area = self.wait.until(EC.visibility_of_element_located(self.SUMMARY_AREA_CLASS))
         
         bus_details = summary_area.find_elements(By.TAG_NAME,"div")
