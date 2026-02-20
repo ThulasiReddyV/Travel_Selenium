@@ -48,20 +48,20 @@ def test_301_passenger_details(driver:WebDriver,data):
                 bus_seat.dropping_point_select(data["dropping_pt"])
                 bus_seat.bp_dp_submit()
                 seat_check = bus_seat.seat_check(data["seat_no"])
-                if "Unavailable" in seat_check:
-                    assert True, data["error_or_message"] 
-                else:
-                    passenger = Passenger_Details(driver)
-                    passenger.select_gender(data["pass_gender"])
-                    passenger.enter_pass_name(data["pass_name"])
-                    passenger.enter_pass_age(data["pass_age"])
-                    passenger.enter_pass_email(data["pass_email"])
-                    passenger.enter_pass_mobile_no(data["pass_mobile"])
-                    passenger.verify_journey_details()
-                    passenger.payment_option_select()
-                    
-                    details_check = passenger.error_check()
-                    if details_check == False:
-                        assert True, "Passenger Data Not entered"
+                assert seat_check in data["error_or_message"], \
+                    f"{data['test_case_id']} failed.\nExpected: '{data['error_or_message']}'\nGot: '{seat_check}'"
+                      
+                passenger = Passenger_Details(driver)
+                passenger.select_gender(data["pass_gender"])
+                passenger.enter_pass_name(data["pass_name"])
+                passenger.enter_pass_age(data["pass_age"])
+                passenger.enter_pass_email(data["pass_email"])
+                passenger.enter_pass_mobile_no(data["pass_mobile"])
+                passenger.verify_journey_details()
+                passenger.payment_option_select()
+                
+                details_check = passenger.error_check()
+                assert passenger.error_check(),\
+                    "Passenger Data Not entered"
                     
 

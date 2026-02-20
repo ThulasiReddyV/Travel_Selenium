@@ -49,9 +49,10 @@ def test_401_payment_page(driver:WebDriver,data):
                 bus_seat.dropping_point_select(data["dropping_pt"])
                 bus_seat.bp_dp_submit()
                 seat_check = bus_seat.seat_check(data["seat_no"])
-                if "Unavailable" in seat_check:
-                    assert True, data["error_or_message"] 
-                else:
+                assert seat_check in data["error_or_message"], \
+                    f"{data['test_case_id']} failed.\nExpected: '{data['error_or_message']}'\nGot: '{seat_check}'"
+
+                if "available" in seat_check:  
                     passenger = Passenger_Details(driver)
                     passenger.select_gender(data["pass_gender"])
                     passenger.enter_pass_name(data["pass_name"])

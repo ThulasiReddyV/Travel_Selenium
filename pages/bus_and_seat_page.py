@@ -75,7 +75,7 @@ class Bus_and_Seat_Selection(Booking_page):
             
         elif "onhld_gents" == seat_class or "onhld_ladies" == seat_class:
             print(f"Seat no {seat_no} is {seat_class} and unavailable present")
-            return f"Onhold unavailable present"
+            return "Onhold"
             
         elif seat_class == "e_ticketing_seat":
             print(f"Seat no {seat_no} is unavailable")
