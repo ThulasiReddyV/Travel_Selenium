@@ -102,7 +102,7 @@ class Booking_page(Base_to_Booking_page):
 
         except TimeoutException:
             no_srv_msg = self.driver.find_element(*self.NO_SERVICES_INFO_XPATH)
-            print(f"no {no_srv_msg.text}")
+            print(f"{no_srv_msg.text}")
             return no_srv_msg.text
 
         

@@ -89,7 +89,6 @@ class Passenger_Details(Bus_and_Seat_Selection):
                 
                 if key in ["Boarding","Dropoff"] and ' - ' in value:
                     parts = value.split("-")
-                    print(f"BD ,{parts}")
                     if len(parts) >= 3:
                         value = parts[1].strip()
                     
@@ -99,7 +98,7 @@ class Passenger_Details(Bus_and_Seat_Selection):
                 key_map = {
                     "From": "from_loc",
                     "To": "to_loc",
-                    "Service Start Date": "Date_of_journey",
+                    "Service Start Date": "date_of_journey",
                     "Service No.": "bus_ser_no",
                     "Seat No(s)": "seat_no",
                     "Boarding": "boarding_pt",
@@ -109,7 +108,7 @@ class Passenger_Details(Bus_and_Seat_Selection):
             if key in key_map:
                 booking_details[key_map[key]] = value
 
-        print(booking_details)
+        #print(booking_details)
         return booking_details
     
 

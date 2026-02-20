@@ -23,7 +23,7 @@ def timestamp():
 
 def take_screenshot(driver:WebDriver,screenshot_name):
     base_dir = os.getcwd()   
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    #timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     screenshot_dir = os.path.join(base_dir,"screenshots",TIMESTAMP)
     os.makedirs(screenshot_dir, exist_ok=True)
     screenshot_path = os.path.join(screenshot_dir,screenshot_name)

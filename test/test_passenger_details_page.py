@@ -26,12 +26,12 @@ def test_301_passenger_details(driver:WebDriver,data):
     booking.to_select(data["to_loc"])
     booking.calender_check()
 
-    selected_date = datetime.strptime(data["Date_of_journey"],"%Y-%m-%d")
+    selected_date = datetime.strptime(data["date_of_journey"],"%Y-%m-%d")
     today = datetime.today()
     if selected_date.date() < today.date():
         assert data["error_or_message"] in booking.past_date()
     else:
-        booking.in_month(data["Date_of_journey"])
+        booking.in_month(data["date_of_journey"])
         booking.submit_travel_details()
 
         buses_data = booking.seats_buses_count()
@@ -48,7 +48,7 @@ def test_301_passenger_details(driver:WebDriver,data):
                 bus_seat.dropping_point_select(data["dropping_pt"])
                 bus_seat.bp_dp_submit()
                 seat_check = bus_seat.seat_check(data["seat_no"])
-                if "unavailable" in seat_check:
+                if "Unavailable" in seat_check:
                     assert True, data["error_or_message"] 
                 else:
                     passenger = Passenger_Details(driver)
@@ -57,7 +57,7 @@ def test_301_passenger_details(driver:WebDriver,data):
                     passenger.enter_pass_age(data["pass_age"])
                     passenger.enter_pass_email(data["pass_email"])
                     passenger.enter_pass_mobile_no(data["pass_mobile"])
-                    passenger.verify_booking_details()
+                    passenger.verify_journey_details()
                     passenger.payment_option_select()
                     
                     details_check = passenger.error_check()

@@ -13,7 +13,7 @@ import time
 
 
 @pytest.mark.parametrize("data",load_test_data(),ids=[d["test_case_id"] for d in load_test_data()])
-def test_301_passenger_details(driver:WebDriver,data):
+def test_401_payment_page(driver:WebDriver,data):
     home = Base_to_Booking_page(driver)
     
     home.nav_to_booking()
@@ -27,12 +27,12 @@ def test_301_passenger_details(driver:WebDriver,data):
     booking.to_select(data["to_loc"])
     booking.calender_check()
 
-    selected_date = datetime.strptime(data["Date_of_journey"],"%Y-%m-%d")
+    selected_date = datetime.strptime(data["date_of_journey"],"%Y-%m-%d")
     today = datetime.today()
     if selected_date.date() < today.date():
         assert data["error_or_message"] in booking.past_date()
     else:
-        booking.in_month(data["Date_of_journey"])
+        booking.in_month(data["date_of_journey"])
         booking.submit_travel_details()
 
         buses_data = booking.seats_buses_count()
@@ -42,26 +42,38 @@ def test_301_passenger_details(driver:WebDriver,data):
             bus_seat = Bus_and_Seat_Selection(driver)
             bus_avail = bus_seat.bus_search(data["bus_ser_no"])
             if bus_avail is False:
-                assert True,data["error_or_message"]
+                assert True, data["error_or_message"]
             else:
 
                 bus_seat.boarding_point_select(data["boarding_pt"])
                 bus_seat.dropping_point_select(data["dropping_pt"])
                 bus_seat.bp_dp_submit()
                 seat_check = bus_seat.seat_check(data["seat_no"])
-                if "unavailable" in seat_check:
+                if "Unavailable" in seat_check:
                     assert True, data["error_or_message"] 
                 else:
                     passenger = Passenger_Details(driver)
-                    passenger.gender(data["pass_gender"])
+                    passenger.select_gender(data["pass_gender"])
                     passenger.enter_pass_name(data["pass_name"])
                     passenger.enter_pass_age(data["pass_age"])
                     passenger.enter_pass_email(data["pass_email"])
                     passenger.enter_pass_mobile_no(data["pass_mobile"])
-                    payment = Payments_page
-                    payment.payment_option_select()
-                    payment.booking_summary()
+                    passenger.verify_journey_details()
+                    passenger.payment_option_select()
+                    
+                    assert passenger.error_check(),\
+                        "Passenger Data Not entered"
+                    
+                    payment = Payments_page(driver)
+                    payment.get_booking_summary()
+                    assert payment.comp_test_case_and_ui(data),\
+                        "Test case and UI data is mismatch"
+                    
+                    payment.confirm_booking_summary()
                     payment.payment_discount_pop_up()
-                    #https://secure.paytmpayments.com/oltp-web/processTransaction?orderid=TG26021716385688TVA6%20%%3E
-                    assert "processTransaction" in driver.current_url
+
+
+
+
+
 

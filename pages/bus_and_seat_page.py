@@ -27,7 +27,7 @@ class Bus_and_Seat_Selection(Booking_page):
             view_seats.click()
             return True
         except TimeoutException:
-            print(f"Service no {srv_no} Bus not found ")
+            print(f"Service number {srv_no} Bus not found ")
             return False 
 
 
@@ -72,13 +72,14 @@ class Bus_and_Seat_Selection(Booking_page):
                 seat_sel.click()
                 self.driver.find_element(*self.SEAT_CONTINUE_XPATH).click()
                 return f"Seat no {seat_no} is available"
+            
         elif "onhld_gents" == seat_class or "onhld_ladies" == seat_class:
             print(f"Seat no {seat_no} is {seat_class} and unavailable present")
-            return f"Seat no {seat_no} is {seat_class} and unavailable present"
+            return f"Onhold unavailable present"
             
         elif seat_class == "e_ticketing_seat":
             print(f"Seat no {seat_no} is unavailable")
-            return f"Seat no {seat_no} is unavailable"
+            return "Unavailable"
         
 
 

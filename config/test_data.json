@@ -1,20 +1,83 @@
  [
-
     {
-        "test_case_id":"Test_006 Seat onhold",
+        "test_case_id":"Test_000 Past Date",
         "from_loc" : "HYDERABAD",
         "to_loc" : "TIRUPATI",
+        "date_of_journey" : "2026-02-10",
+        "error_or_message" : "Past Date is selected"
+    },
+    {   
+        "test_case_id":"Test_001 Above 2 Months Future Date",
+        "from_loc" : "HYDERABAD",
+        "to_loc" : "TIRUPATI",
+        "date_of_journey" : "2026-05-20",
         "bus_ser_no" : "1453",
-        "Date_of_journey" : "2026-03-20",
+        "error_or_message" : "No buses available for this route"
+
+    },
+
+    {   
+        "test_case_id":"Test_002 No Bus route",
+        "from_loc" : "HYDERABAD",
+        "to_loc" : "ACHAMPET",
+        "date_of_journey" : "2026-03-20",
+        "bus_ser_no" : "1453",
+        "error_or_message" : "No buses available for this route"
+    },
+
+    {   
+        "test_case_id":"Test_003 No Bus with the Service number",
+        "from_loc" : "HYDERABAD",
+        "to_loc" : "TIRUPATI",
+        "date_of_journey" : "2026-03-20",
+        "bus_ser_no" : "1454",
+        "error_or_message" : "No Bus with the service number found"
+    },
+
+    {
+        "test_case_id":"Test_004 Unavailable Seat Selection",
+        "from_loc" : "HYDERABAD",
+        "to_loc" : "TIRUPATI",
+        "date_of_journey" : "2026-03-20",
+        "bus_ser_no" : "1453",
         "boarding_pt" : "MGBS",
-        "dropping_pt" : "TIRUPATI",
+        "dropping_pt" : "TIRUPATI BS",
+        "seat_no" : "10",
+        "error_or_message" : "Unavailable Seat Selection"
+
+    },
+    {
+        "test_case_id":"Test_005 Valid Date and Route",
+        "from_loc" : "HYDERABAD",
+        "to_loc" : "TIRUPATI",
+        "date_of_journey" : "2026-03-20",
+        "bus_ser_no" : "1453",
+        "boarding_pt" : "MGBS",
+        "dropping_pt" : "TIRUPATI BS",
         "seat_no" : "18",
         "pass_gender" : "Male",
         "pass_name" : "Ttt",
         "pass_age" : "24",
         "pass_email" : "Ttt@gmail.com",
         "pass_mobile" : "9012345678",
-        "error_or_message" : "Seat onhold"
+        "error_or_message" : "Success"
+
+    },
+    {
+        "test_case_id":"Test_006 Seat onhold",
+        "from_loc" : "HYDERABAD",
+        "to_loc" : "TIRUPATI",
+        "date_of_journey" : "2026-03-20",
+        "bus_ser_no" : "1453",
+        "boarding_pt" : "MGBS",
+        "dropping_pt" : "TIRUPATI BS",
+        "seat_no" : "18",
+        "pass_gender" : "Male",
+        "pass_name" : "Ttt",
+        "pass_age" : "24",
+        "pass_email" : "Ttt@gmail.com",
+        "pass_mobile" : "9012345678",
+        "error_or_message" : "Seat Onhold present unavailable"
 
     }
 

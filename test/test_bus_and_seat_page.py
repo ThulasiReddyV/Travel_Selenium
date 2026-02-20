@@ -13,21 +13,21 @@ def test_201_bus_and_seat_select(driver:WebDriver,data):
     
     home.nav_to_booking()
     home.windows_count_and_handle()
-    time.sleep(5)
+    #time.sleep(5)
     home.close_discount_pop_up()
     
     booking = Booking_page(driver)
-    time.sleep(2)
+    #time.sleep(2)
     booking.from_select(data["from_loc"])
     booking.to_select(data["to_loc"])
     booking.calender_check()
 
-    selected_date = datetime.strptime(data["Date_of_journey"],"%Y-%m-%d")
+    selected_date = datetime.strptime(data["date_of_journey"],"%Y-%m-%d")
     today = datetime.today()
     if selected_date.date() < today.date():
         assert data["error_or_message"] in booking.past_date()
     else:
-        booking.in_month(data["Date_of_journey"])
+        booking.in_month(data["date_of_journey"])
         booking.submit_travel_details()
 
         buses_data = booking.seats_buses_count()
