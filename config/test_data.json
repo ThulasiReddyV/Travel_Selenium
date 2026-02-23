@@ -12,7 +12,7 @@
         "to_loc" : "TIRUPATI",
         "date_of_journey" : "2026-05-20",
         "bus_ser_no" : "1453",
-        "error_or_message" : "No buses available for this route"
+        "error_or_message" : "No Buses available for the Day!"
 
     },
 
@@ -22,16 +22,16 @@
         "to_loc" : "ACHAMPET",
         "date_of_journey" : "2026-03-20",
         "bus_ser_no" : "1453",
-        "error_or_message" : "No buses available for this route"
+        "error_or_message" : "No Buses available for the Day!"
     },
 
     {   
-        "test_case_id":"Test_003 No Bus with the Service number",
+        "test_case_id":"Test_003 Bus with unavaialble service number",
         "from_loc" : "HYDERABAD",
         "to_loc" : "TIRUPATI",
         "date_of_journey" : "2026-03-20",
         "bus_ser_no" : "1454",
-        "error_or_message" : "No Bus with the service number found"
+        "error_or_message" : "Service number is unavaialble"
     },
 
     {
@@ -43,7 +43,7 @@
         "boarding_pt" : "MGBS",
         "dropping_pt" : "TIRUPATI BS",
         "seat_no" : "10",
-        "error_or_message" : "Unavailable Seat Selection"
+        "error_or_message" : "Seat is unavailable for booking"
 
     },
     {
@@ -60,7 +60,7 @@
         "pass_age" : "24",
         "pass_email" : "Ttt@gmail.com",
         "pass_mobile" : "9012345678",
-        "error_or_message" : "Seat available and Payment Processed"
+        "error_or_message" : "Seat is available and Payment Processed"
 
     },
     {
@@ -77,7 +77,7 @@
         "pass_age" : "24",
         "pass_email" : "Ttt@gmail.com",
         "pass_mobile" : "9012345678",
-        "error_or_message" : "Seat Onhold present unavailable"
+        "error_or_message" : "Seat is currently unavailable for booking"
 
     }
 

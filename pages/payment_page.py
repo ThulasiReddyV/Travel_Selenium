@@ -140,8 +140,6 @@ class Payments_page(Passenger_Details):
             return False
     
 
-
-
     def confirm_booking_summary(self):
         take_screenshot(self.driver,'Passenger_Details')
         confirm_details = self.wait.until(EC.visibility_of_element_located(self.CNF_DETAILS_XPATH))

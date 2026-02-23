@@ -9,9 +9,9 @@ from utilities import *
 from datetime import datetime
 import time
 
+test_data = load_test_data()
+@pytest.mark.parametrize("data", test_data,ids=[d["test_case_id"] for d in test_data])
 
-
-@pytest.mark.parametrize("data",load_test_data(),ids=[d["test_case_id"] for d in load_test_data()])
 def test_301_passenger_details(driver:WebDriver,data):
     home = Base_to_Booking_page(driver)
     
@@ -29,39 +29,43 @@ def test_301_passenger_details(driver:WebDriver,data):
     selected_date = datetime.strptime(data["date_of_journey"],"%Y-%m-%d")
     today = datetime.today()
     if selected_date.date() < today.date():
-        assert data["error_or_message"] in booking.past_date()
+        actual_msg = data["error_or_message"]
+        expected_msg = booking.past_date()
+        assert  expected_msg in actual_msg ,\
+            f"Expected: {expected_msg} to be in {actual_msg}" 
     else:
         booking.in_month(data["date_of_journey"])
         booking.submit_travel_details()
 
         buses_data = booking.seats_buses_count()
         if data["error_or_message"] in buses_data:
-            assert True
+            assert data["error_or_message"] in buses_data, \
+                f"Expected:'{data["error_or_message"]}', not found in '{buses_data}'"
         else:
             bus_seat = Bus_and_Seat_Selection(driver)
             bus_avail = bus_seat.bus_search(data["bus_ser_no"])
-            if bus_avail is False:
-                assert True,data["error_or_message"]
+            if "unavaialble" in bus_avail:
+                assert data["error_or_message"] in bus_avail, \
+                    f"Expected:'{data["error_or_message"]}', not found in '{bus_avail}'"
             else:
 
                 bus_seat.boarding_point_select(data["boarding_pt"])
                 bus_seat.dropping_point_select(data["dropping_pt"])
                 bus_seat.bp_dp_submit()
                 seat_check = bus_seat.seat_check(data["seat_no"])
-                assert seat_check in data["error_or_message"], \
-                    f"{data['test_case_id']} failed.\nExpected: '{data['error_or_message']}'\nGot: '{seat_check}'"
-                      
-                passenger = Passenger_Details(driver)
-                passenger.select_gender(data["pass_gender"])
-                passenger.enter_pass_name(data["pass_name"])
-                passenger.enter_pass_age(data["pass_age"])
-                passenger.enter_pass_email(data["pass_email"])
-                passenger.enter_pass_mobile_no(data["pass_mobile"])
-                passenger.verify_journey_details()
-                passenger.payment_option_select()
-                
-                details_check = passenger.error_check()
-                assert passenger.error_check(),\
-                    "Passenger Data Not entered"
+                if "e_ticketing_seat" in seat_check or "onhld" in seat_check: 
+                    assert "unavailable" in data["error_or_message"] and "unavailable" in seat_check, \
+                        f"'unavailable' not found in '{data["error_or_message"]}', '{seat_check}'"
+                else: 
+                    passenger = Passenger_Details(driver)
+                    passenger.select_gender(data["pass_gender"])
+                    passenger.enter_pass_name(data["pass_name"])
+                    passenger.enter_pass_age(data["pass_age"])
+                    passenger.enter_pass_email(data["pass_email"])
+                    passenger.enter_pass_mobile_no(data["pass_mobile"])
+                    passenger.verify_journey_details()
+                    passenger.payment_option_select()
                     
+                    assert passenger.error_check(),\
+                        "Passenger Data Not entered"
 

@@ -21,14 +21,17 @@ class Bus_and_Seat_Selection(Booking_page):
 
             bus_ser_srch = self.wait.until(EC.visibility_of_element_located((By.XPATH,f"//*[contains(@class,'Routeid') and contains(.,'{srv_no}')]")))
             self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", bus_ser_srch)
-            print(f"Service no {srv_no} Bus found ")
+            display_msg = f"Bus with {srv_no} Service number is avaialble"
+            print(display_msg)
             parent_div = bus_ser_srch.find_element(*self.PARENT_DIV)
             view_seats = parent_div.find_element(*self.VIEW_SEATS_BUTTON_XPATH)
             view_seats.click()
-            return True
+            return display_msg
+        
         except TimeoutException:
-            print(f"Service number {srv_no} Bus not found ")
-            return False 
+            display_msg = f"Bus with {srv_no} Service number is unavaialble"
+            print(display_msg)
+            return display_msg 
 
 
     def boarding_point_select(self,data):
@@ -59,27 +62,28 @@ class Bus_and_Seat_Selection(Booking_page):
         child_of_seat_sel = seat_sel.find_element(By.XPATH,".//*")
         seat_class = child_of_seat_sel.get_attribute('class') 
         print(seat_class)
-         
+        return_msg =""
         if "available_seat" in seat_class:
 
             if "ladies" in seat_class:
-                print(f"Seat no {seat_no} is available for female")
+                return_msg = f"{seat_class}:Seat number {seat_no} is available for female passengers only"
                 seat_sel.click()
                 self.driver.find_element(*self.SEAT_CONTINUE_XPATH).click()
-                return f"Seat no {seat_no} is available for female"
+
             elif "gents" in seat_class or "available_seat" == seat_class:
+                return_msg = f"{seat_class}:Seat number {seat_no} is available for all passengers"
+                
                 print(f"Seat no {seat_no} is available")
                 seat_sel.click()
                 self.driver.find_element(*self.SEAT_CONTINUE_XPATH).click()
-                return f"Seat no {seat_no} is available"
             
         elif "onhld_gents" == seat_class or "onhld_ladies" == seat_class:
-            print(f"Seat no {seat_no} is {seat_class} and unavailable present")
-            return "Onhold"
-            
+            return_msg = f"{seat_class}:Seat number {seat_no} is currently unavailable"
+             
         elif seat_class == "e_ticketing_seat":
-            print(f"Seat no {seat_no} is unavailable")
-            return "Unavailable"
+            return_msg = f"{seat_class}:Seat number {seat_no} is unavailable"
+        print(return_msg)
+        return return_msg
         
 
 
