@@ -18,7 +18,7 @@ def driver(config_load):
     driver.get(config_load["base_url"])
     driver.maximize_window()
     yield driver
-    take_screenshot(driver,'Payment_Page_again')
+    take_screenshot(driver,'Page_Upto_Processed')
     driver.quit()
 
 def pytest_configure(config):

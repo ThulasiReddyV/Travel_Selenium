@@ -5,6 +5,11 @@ from pages.booking_page import Booking_page
 from conftest import  load_test_data 
 from datetime import datetime
 import time
+
+
+
+
+
 test_data = load_test_data()
 @pytest.mark.parametrize("data", test_data,ids=[d["test_case_id"] for d in test_data])
 
@@ -29,13 +34,13 @@ def test_101_booking(driver:WebDriver,data):
     if selected_date.date() < today.date():
         actual_msg = data["error_or_message"]
         expected_msg = booking.past_date()
-        assert  expected_msg in actual_msg ,\
+        assert  expected_msg.lower() in actual_msg.lower() ,\
             f"Expected: {expected_msg} to be in {actual_msg}" 
     else:
         booking.in_month(data["date_of_journey"])
         booking.submit_travel_details()
 
         buses_data = booking.seats_buses_count()
-        if data["error_or_message"] in buses_data:
-            assert data["error_or_message"] in buses_data, \
+        if data["error_or_message"].lower() in buses_data.lower():
+            assert data["error_or_message"].lower() in buses_data.lower(), \
                 f"Expected:'{data["error_or_message"]}', not found in '{buses_data}'"

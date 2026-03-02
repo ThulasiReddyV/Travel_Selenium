@@ -41,8 +41,6 @@ def test_401_payment_page(driver:WebDriver,data):
         booking.submit_travel_details()
 
         buses_data = booking.seats_buses_count()
-        
-
         if data["error_or_message"].lower() in buses_data.lower():
             assert data["error_or_message"].lower() in buses_data.lower(), \
                 f"Expected:'{data["error_or_message"]}', not found in '{buses_data}'"
