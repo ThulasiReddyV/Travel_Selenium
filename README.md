@@ -249,5 +249,5 @@ screenshots/2026_03_02_20_51_35/
 
 **Thulasi Reddy Varakantham** 
 
-SDET / Software Test Engineer — transitioning from automotive embedded (MIL/SIL) testing into IT/SaaS QA and SDET roles.
+SDET / Software Test Engineer 
 Built as a hands-on portfolio project to demonstrate Selenium, Python, Pytest, and Page Object Model skills on a real, live web application.
